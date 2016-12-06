@@ -1,0 +1,292 @@
+<html>
+
+<head>
+   <meta name="keywords" content="CharityWorld, CharityWorld-JASSS, Charity World, NetLogo, charity, world, float, floating-point arithmetic, error, agent-based modelling, emergence, FEARLUS, Izquierdo, Polhill">
+
+   <meta name="Description" content="CharityWorld-JASSS: an agent-based model to show the emergent effects of floating-point errors">
+
+   <meta name="Authors" content="Izquierdo, Luis, Polhill, Gary">
+
+   <title>CharityWorld-JASSS</title>
+
+   <STYLE type="text/css">
+      H1 {
+         BACKGROUND-COLOR: #66ccff;
+         font-family: monospace;
+         padding: 5px;
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      H2 {
+         BACKGROUND-COLOR: #dddddd;
+         font-family: monospace;
+         padding: 5px;
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      p {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      ol {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type="text/css">
+      ul {
+         font-family: monospace
+      }
+   </STYLE>
+   <STYLE type=text/css>
+      i.parameter {
+         font-family: arial;
+         color: green;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type=text/css>
+      i.button {
+         font-family: arial;
+         color: blue;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type=text/css>
+      i.value {
+         font-family: arial;
+         color: #444444;
+         font-weight: bold
+      }
+   </STYLE>
+   <STYLE type=text/css>
+      i.quadrant {
+         color: red;
+         font-weight: bold
+      }
+   </STYLE>
+
+</head>
+
+<body>
+
+
+   <h1>CharityWorld-JASSS</h1>
+   <h2>Luis R. Izquierdo &amp; Gary Polhill</h2>
+   <H1>HOW TO INSTALL THE MODEL</H1>
+
+   <p>To use CharityWorld-JASSS, you will have to install <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo 3.0 (free and open source)</a> and download <a href="CharityWorld-JASSS.nlogo">the model itself</a>. Unzip the downloaded file and click on CharityWorld-JASSS.nlogo</p>
+
+   <!--
+<p>This applet requires Java 1.4.1 or higher.  You may obtain the latest Java plugin from
+<a target="_blank" href="http://java.sun.com/getjava/download.html">Sun's Java site</a>.</p> 
+
+<p align = center>
+<applet code="org.nlogo.window.Applet"
+        archive="NetLogoLite.jar"
+        width="785" height="556"
+	alt = "Your browser is not able to run this applet!   Check that JAVA is enabled (in Netscape Navigator, go to Edit->Preferences->Advanced->Enable Java; 
+	In Internet Explorer go to Tools -> Internet options->Advanced->Java(Sun). If the applet still does not work, check that you are using Java 1.4.1 or higher).">
+  <param name="DefaultModel"
+         value="CharityWorld-JASSS.nlogo">
+</applet>
+</p>
+
+<p align = right>
+created with <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetLogo</a>
+<br>view/download model file: <a href="CharityWorld-JASSS.nlogo">CharityWorld-JASSS.nlogo</a>
+
+-->
+
+   <h1>WHAT IS IT?</h1>
+   <p>CharityWorld-JASSS is a model designed to show the emergent effects of floating-point errors in agent-based models. This is done by showing how the model behaves dramatically differently using floating-point arithmetic and using real arithmetic. CharityWorld-JASSS also illustrates how floating-point problems can be avoided by using two simple <i class="parameter">techniques</i>: <i class="value">Tolerance Windows</i>, and <i class="value">Round to <i>n</i> significant digits</i>.
+      <br>
+      <br>CharityWorld-JASSS is a model of wealth redistribution in which a number of spatially embedded agents begin with a highly unequal distribution of wealth. This unequal distribution is then redistributed by the agents using a simple local rule determining when and to whom money should be given. Each of the four quadrants in the grid represents a different implementation of the same model.
+      <br>
+      <br>CharityWorld-JASSS is an unofficial and reduced version of CharityWorld. CharityWorld-JASSS should be used for illustration purposes only. You can find the official version of CharityWorld (written in Objective-C) in <a target="_blank" href="http://www.macaulay.ac.uk/fearlus/floating-point/charity-world/">http://www.macaulay.ac.uk/fearlus/floating-point/charity-world/</a>.
+   </p>
+
+   <h1>HOW IT WORKS</h1>
+   <p>In CharityWorld-JASSS, the big square grid in the centre is divided into four different quadrants. Each of the quadrants represents a different implementation of the same model. What relates the four implementations is that they behave in exactly the same way for any parameterisation IF RUN UNDER REAL ARITHMETIC (i.e. with no floating-point errors). The four implementations are mathematically equivalent in real arithmetic (which is why we say that they are different implementations of the same model), but they are very different in floating-point arithmetic.
+   </p>
+
+   <h2>THE MODEL</h2>
+   <p>In this section we explain the model (which is run in each of the quadrants) in a way that would suffice to implement it in real arithmetic. However, as you will see, this description could lead to implementations that behave differently in floating-point arithmetic (differently one from another, and each one of them differently from the correct behaviour).
+      <br>
+      <br>In this model there is a grid of default size 13x13 (each of the quadrants) which is filled with stationary agents, one per cell. Agents are endowed with an initial wealth of 2 coins.
+      <br>
+      <br>At the beginning of the simulation agents participate in a lottery for which they have to pay 2 coins as the ticket price. The agent at the centre of the grid happens to be the winner of the lottery so, after the lottery has taken place (i.e. after clicking on <i class="button">Conduct lottery</i>), its wealth in coins is equal to the number of agents times 2, while the other agents' wealth is 0.
+      <br>
+      <br>At any point in time an agent is locally rich (if and only if the agent is richer than its neighbourhood average), locally average (if and only if the agent's wealth is equal to its neighbourhood average), or locally poor (if and only if the agent is poorer than its neighbourhood average). An agent's neighbours are defined using the Moore neighbourhood, which consists of those agents with whom the agent shares an edge or a corner. Thus, an agent which is not at the edge of the grid has 8 neighbours. The grid does not wrap around.
+      <br>
+      <br>Our agents have a strong craving for equality, so if they are locally rich, they are prepared to donate a coin to their neighbours who are not locally rich. More specifically, an agent considers its neighbours in ascending order of wealth, and gives one coin to each of them (one neighbour at a time) as long as the donating agent is locally rich and the considered neighbour is not locally rich. This process is called the <b><i><font color="red">cycle of redistribution</font></i></b>.
+      <br>
+      <br>Scheduling in the model works as follows: at every time-step a locally rich agent is selected at random and told to perform one cycle of redistribution.
+      <br>
+      <br>So, to clarify things, the first cycle of redistribution in a simulation run should consist of the lottery winner (who is the only locally rich agent right after the lottery has taken place) giving one coin to each of its neighbours (who are not locally rich). Subsequent cycles of redistribution will also be conducted by the lottery winner until one of its neighbours becomes locally rich and is selected (at random) to perform the cycle of redistribution. At that point, wealth will spread even further, eventually making other neighbouring agents locally rich, and therefore turning them into potential donors. The question is: will wealth be completely redistributed using only this simple local rule?
+      <br>
+   </p>
+   <h2>WHAT IS DIFFERENT IN EACH QUADRANT</h2>
+   <p>Different quadrants implement different equations to assess whether an agent is locally rich, average, or poor. The four equations implemented in CharityWorld-JASSS are all mathematically equivalent in real arithmetic, but can give different results in floating-point arithmetic.
+      <br>
+      <br><i class="quadrant">a) Exclusive Mean (bottom-right quadrant)</i>: The two quantities that are compared are the particular agent's wealth, and the average wealth in the neighbourhood (excluding the particular agent's wealth in the calculation of the average).
+   </p>
+
+   <p align=center>my-wealth <b>  <---IS COMPARED WITH--->  </b> (sum map [wealth-of ?] my-neighbours) / (length my-neighbours)</p>
+
+   <p>
+      <i class="quadrant">b) Exclusive Total (top-right quadrant)</i>: The two quantities that are compared are the particular agent's wealth multiplied by the number of agents in its neighbourhood (excluding itself), and the total wealth in the neighbourhood (excluding the particular agent's wealth).
+   </p>
+   <p align=center>my-wealth * (length my-neighbours) <b>  <---IS COMPARED WITH--->  </b> (sum map [wealth-of ?] my-neighbours)</p>
+   <p>
+      <i class="quadrant">c) Inclusive Mean (bottom-left quadrant)</i>: The two quantities that are compared are the particular agent's wealth, and the average wealth in the neighbourhood (including the particular agent's wealth in the calculation of the average).</p>
+
+   <p align=center>my-wealth <b>  <---IS COMPARED WITH--->  </b> ((sum map [wealth-of ?] my-neighbours) + my-wealth) / ((length my-neighbours) + 1)</p>
+
+   <p><i class="quadrant">d) Inclusive Total (top-left quadrant)</i>: The two quantities that are compared are the particular agent's wealth multiplied by the number of agents in its neighbourhood (including itself), and the total wealth in the neighbourhood (including the particular agent's wealth).
+   </p>
+
+   <p align=center>my-wealth * ((length my-neighbours) + 1) <b>  <---IS COMPARED WITH--->  </b> ((sum map [wealth-of ?] my-neighbours) + my-wealth)</p>
+   <p>
+      When using coin values that prevent errors from happening (e.g. integers), the 4 algorithms above give always the same answer. The behaviour of the model in real arithmetic is also independent of the particular coin value used. Thus, the four of them will also exhibit exactly the same behaviour for any coin value that does not cause errors (as long as the same random seed is used). On the contrary, when using coin values that cause floating-point errors to happen (e.g. 0.1, 0.2, 0.3, or 0.4), each implementation most often gives a different result (if the model is run for long enough), and the four of them are incorrect.
+   </p>
+
+   <h2>TECHNIQUES TO DEAL WITH FLOATING-POINT ERRORS</h2>
+   <ul>
+      <li><i class="value">Tolerance Windows</i>: The use of tolerance windows consists in replacing the comparison operators as shown below:
+         <ul>
+            <li>x > y ---> (x > y + <i class="parameter">epsilon</i>)</li>
+            <li>x
+               < y ---> (x
+                  < y – <i class="parameter">epsilon</i>)</li>
+            <li>x = y ---> (x >= y - <i class="parameter">epsilon</i>) &amp;&amp; (x &le;y + <i class="parameter">epsilon</i>)</li>
+         </ul>
+         where <i class="parameter">epsilon</i> is a non-negative floating point number.</li>
+      <br>
+      <li><i class="value">Round to <i>n</i> significant digits</i>: This technique consists in, just before any comparison takes place, rounding each of the two numbers involved in the comparison to the (floating-point representation of the) closest number with <i>n</i> <i class="parameter">significant decimal digits</i>.</li> If the number is whithin the range [-<i class="parameter">epsilon</i>, <i class="parameter">epsilon</i>], then it is rounded to 0.
+   </ul>
+
+   <h1>HOW TO USE IT</h1>
+   <ol>
+      <li>Choose a <i class="parameter">coin value</i>.
+         <br>This parameter determines the value of the coin used to calculate every agent's wealth.
+         <br>Please realise that if the model ran without any rounding errors, then the value of the coin would not make any difference whatsoever. Using binary numbers like 0.5, 1.0, 1.5, 2.0, or any other multiple of 0.5, prevents any errors from happening. Thus, the behaviour of the model using any of those numbers is exactly the same (using the same random seed). On the contrary, using numbers like 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, ... causes the appearance of rounding errors and of its undesirable consequences in the emergent properties of the model.
+         <br>
+      </li>
+      <li>Click on <i class="button">Start over</i>.
+         <br>At this point every agent will be endowed with 2 coins.
+         <br>
+      </li>
+      <li>Optionally, input your own random seed by clicking on <i class="button">Change random seed</i>.
+         <br>To replicate runs, use the same random seed.
+         <br>
+      </li>
+      <li>Click on <i class="button">Conduct lottery</i>.
+         <br>Every agent gives the 2 coins to the agent in the centre.
+         <br>
+      </li>
+      <li>Click on <i class="button">Conduct cycles of redistribution repeatedly</i>.
+         <br>A locally rich agent is selected at random and asked to perform the cycle of redistribution.
+         <br>
+      </li>
+      <li>Explore the two <i class="parameter">display modes</i>:
+         <ul>
+            <li><i class="value">Absolute wealth</i>: Each agent is coloured according to the following legend:
+               <ul>
+                  <li>wealth > 2 * coin-value: green shades. The more wealth, the darker the shade of green.</li>
+                  <li>wealth = 2 * coin-value: yellow.</li>
+                  <li>wealth
+                     < 2 * coin-value: red shades. The less wealth, the darker the shade of red. <li>Blue overrides when: (wealth > 1.5 * coin-value AND wealth
+                        < 2.5 * coin-value AND wealth !=2 * coin-value). Blue will not appear in runs that do not suffer floating-point errors. </li>
+               </ul>
+               </li>
+               <li><i class="value">Relative (local) wealth</i>: Each agent is coloured according to the following legend:
+                  <ul>
+                     <li>locally rich: turquoise</li>
+                     <li>locally average: orange</li>
+                     <li>locally poor: magenta</li>
+                  </ul>
+               </li>
+         </ul>
+         The button <i class="button">Update grid</i> is provided to compare snapshots of the two types of graphs above that refer to the same time-step. When the model is running, the grid is updated every time-step automatically.
+
+         </li>
+         <li>Explore the effects of using different <i class="parameter">techniques to deal with floating-point errors</i>:
+            <ul>
+               <li><i class="value">Tolerance Windows</i>, with different values of <i class="parameter">epsilon</i>.</li>
+               <li><i class="value">Round to <i>n</i> significant digits</i>, with different values of <i class="parameter">significant-digits</i> and <i class="parameter">epsilon</i>.</li>
+            </ul>
+         </li>
+   </ol>
+
+   <h1>THINGS TO NOTICE</h1>
+   <p>Under real arithmetic, it can be proved that every simulation run should behave in exactly the same way no matter the coin value or the particular implementation of the model (as long as the same random seed is used). It can also be proved that, under real arithmetic, every simulation run should eventually terminate with all the agents having the initial wealth of 2 coins (wealth is eventually completely redistributed irrespective of the coin value, the particular implementation, or the random seed). These results can be checked using coin values that are multiples of 0.5, for which simulations run without errors.
+   </p>
+   <p>Under floating-point arithmetic, however, the story is very different. There are many parameter values (in fact most of them) for which the coin value makes a difference, the specific implementation makes a difference, and wealth is never redistributed. Some coin values that show this type of behaviour are: 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, and 0.9.
+   </p>
+
+   <h1>THINGS TO TRY</h1>
+
+   <p>An immediate way of appreciating the impact of floating-point errors in this model is to choose a <i class="parameter">coin value</i> of 0.4, set the <i class="parameter">display mode</i> to <i class="value">Relative (local) wealth</i>, and click on <i class="button">Start over</i> (without using any <i class="parameter">technique to deal with floating-point errors</i>). At this point every agent has a wealth of 0.8, so every agent should be locally average, and should not do anything if the <i class="button">Conduct cycles of redistribution repeatedly</i> button was clicked. However, due to floating-point errors, some agents see themselves as locally rich, some as locally-average, and some as locally-poor (depending on the number of neighbours). Thus, some of them are willing to give some money to others even though they all have exactly the same amount of money! As a matter of fact, if you click on <i class="button">Conduct cycles of redistribution repeatedly</i> (without clicking on <i class="button">Conduct lottery</i> before) coins are indefinitely interchanged in every implementation!! This is caused only by floating-point errors. Such an undesirable behaviour can be prevented by using e.g. tolerance windows with <i class="parameter">epsilon</i> = 0.001, or <i class="parameter">round to <i>n</i> significant digits</i> with <i class="parameter">significant-digits</i> = 6 and <i class="parameter">epsilon</i> = 0.001.
+   </p>
+   <p>You can also check that when the <i class="parameter">coin value</i> is a multiple of 0.5 (no floating-point errors occur), simulation runs terminate with all the wealth redistributed, and the behaviour of the model is exactly the same in the four quadrants and for any of those coin values (remember to use the same random seed). On the contrary, when using a <i class="parameter">coin value</i> of 0.7, the behaviour of the model is incorrect (it never terminates), and is different between implementations (but it should not be). Such an undesirable behaviour can be prevented by using e.g. tolerance windows with <i class="parameter">epsilon</i> = 0.001, or <i class="parameter">round to <i>n</i> significant digits</i> with <i class="parameter">significant-digits</i> = 6 and <i class="parameter">epsilon</i> = 0.001.
+   </p>
+
+   <h1>IMPORTANT NOTE</h1>
+   <p>It is important to remark that the floating-point problems that this model illustrates are caused strictly by the use of floating point arithmetic, not by the use of Netlogo in particular. FLOATING-POINT PROBLEMS ARE BY NO MEANS SPECIFIC ONLY TO NETLOGO. NetLogo, like most programming environments, operates according to the IEEE 754 standard for floating-point arithmetic. You can expect the exact same behaviour if you implement this model in any other platform that follows the IEEE 754 standard.
+   </p>
+
+   <h1>EXTENDING THE MODEL</h1>
+   <p>CharityWorld-JASSS is an unofficial and reduced version of CharityWorld. CharityWorld-JASSS should be used only for illustration purposes. The official version of CharityWorld, which was created by Gary Polhill and Luis Izquierdo, is more flexible and includes many extensions to this reduced version. You can find the official version of CharityWorld (written in Objective-C) in <a target="_blank" href="http://www.macaulay.ac.uk/fearlus/floating-point/charity-world/">http://www.macaulay.ac.uk/fearlus/floating-point/charity-world/</a>.
+   </p>
+   <p>CharityWorld is written in a manner that follows a fairly standard simple <a target="_blank" href="http://www.swarm.org/">Swarm</a> model implementation, with the exception that all floating point numbers are represented using objects rather than the standard double C data type. These objects all belong to the class DoubleSimple, which contains a double instance variable, and methods to replace the arithmetic operators {+, -, *, /} and the comparison operators. Subclasses of DoubleSimple implement various techniques to deal with floating-point problems (e.g. tolerance windows, offsets, interval arithmetic, strings...), and DoubleSimple features creation methods that cause all new floating point objects to belong to one of these subclasses rather than DoubleSimple itself. The user can therefore specify which subclass of Double-Simple they wish to use throughout a particular simulation, and hence which technique will be used to manage floating point issues.
+   </p>
+   <p>
+      For a detailed description of CharityWorld, see:
+      <br>Polhill, J.G., Izquierdo, L.R. and Gotts, N.M. (2006)
+      <br>What every agent-based modeller should know about floating point arithmetic.
+      <br>Environmental Modelling &amp; Software, 21 (3), March 2006. pp. 283-309.
+      <br><a target="_blank" href="http://www.sciencedirect.com/science/journal/13648152">http://www.sciencedirect.com/science/journal/13648152</a>
+   </p>
+
+   <h1>LICENCE</h1>
+
+   <p>CharityWorld-JASSS is a model designed to show the emergent effects of floating-point errors in agent-based models.
+      <br>Copyright (C) 2005 Luis R. Izquierdo &amp; J. Gary Polhill
+   </p>
+
+   <p>This program is free software; you can redistribute it and/or modify it under the terms of the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+   </p>
+   <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> for more details.
+   </p>
+   <p>You can download a copy of the <a target="_blank" href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> by clicking <a target="_blank" href="./gpl.txt">here</a>; you can also get a printed copy writing to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   </p>
+   <p>Contact information:
+      <br>Luis R. Izquierdo
+      <br> University of Burgos, Spain.
+      <br> e-mail: <a href="mailto:lrizquierdo@ubu.es">lrizquierdo@ubu.es</a>
+   </p>
+
+   <h1>CREDITS AND REFERENCES</h1>
+   <p>CharityWorld-JASSS has been implemented by Luis R. Izquierdo &amp; J. Gary Polhill. We would like to thank Segismundo S. Izquierdo for his helpful comments and suggestions.
+   </p>
+   <p>If you are interested in the effects of floating-point errors on agent-based models you might also want to read the following papers:
+      <br>Polhill, J.G., Izquierdo, L.R. and Gotts, N.M. (2006)
+      <br>What every agent-based modeller should know about floating point arithmetic.
+      <br>Environmental Modelling &amp; Software, 21 (3), March 2006. pp. 283-309.
+      <br><a target="_blank" href="http://www.sciencedirect.com/science/journal/13648152">http://www.sciencedirect.com/science/journal/13648152</a>
+      <br>
+      <br>Polhill, J.G., Izquierdo, L.R. and Gotts, N.M. (2005)
+      <br>The ghost in the model (and other effects of floating point arithmetic).
+      <br>Journal of Artificial Societies and Social Simulation 8(1).
+      <br><a target="_blank" href="http://jasss.soc.surrey.ac.uk/8/1/5.html">http://jasss.soc.surrey.ac.uk/8/1/5.html</a>
+      <br>
+      <br>Polhill, J.G. and Izquierdo, L.R. (2005)
+      <br>Lessons learned from converting the Artificial Stock Market to interval arithmetic.
+      <br>Journal of Artificial Societies and Social Simulation 8(2).
+      <br><a target="_blank" href="http://jasss.soc.surrey.ac.uk/8/2/2.html">http://jasss.soc.surrey.ac.uk/8/2/2.html</a>
+   </p>
+
+</body>
+
+</html>
