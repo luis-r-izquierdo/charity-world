@@ -65,6 +65,14 @@
          font-weight: bold
       }
    </STYLE>
+   <STYLE type="text/css">
+      img {
+         max-width: 100%;
+         height: auto;
+         width: auto\9;
+         /* ie8 */
+      }
+   </STYLE>
 
 </head>
 
@@ -109,6 +117,8 @@ created with <a target="_blank" href="http://ccl.northwestern.edu/netlogo/">NetL
    <h1>HOW IT WORKS</h1>
    <p>In CharityWorld-JASSS, the big square grid in the centre is divided into four different quadrants. Each of the quadrants represents a different implementation of the same model. What relates the four implementations is that they behave in exactly the same way for any parameterisation IF RUN UNDER REAL ARITHMETIC (i.e. with no floating-point errors). The four implementations are mathematically equivalent in real arithmetic (which is why we say that they are different implementations of the same model), but they are very different in floating-point arithmetic.
    </p>
+
+   <img style="margin:0px auto;display:block" src="./charity-world.png" alt="timeline" />
 
    <h2>THE MODEL</h2>
    <p>In this section we explain the model (which is run in each of the quadrants) in a way that would suffice to implement it in real arithmetic. However, as you will see, this description could lead to implementations that behave differently in floating-point arithmetic (differently one from another, and each one of them differently from the correct behaviour).
